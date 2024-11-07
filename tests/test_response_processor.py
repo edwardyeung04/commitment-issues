@@ -1,5 +1,7 @@
 # tests/test_response_processor.py
 
+# pylint: disable=redefined-outer-name
+
 from unittest.mock import patch
 import pytest
 from openai_integration.response_processor import ResponseProcessor
