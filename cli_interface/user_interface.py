@@ -5,12 +5,7 @@ import os
 import subprocess
 import sys
 import tempfile
-<<<<<<< HEAD
-from rich import print
-||||||| dd0ec99
-=======
 from rich import print as rich_print
->>>>>>> 075de42774c41d891314acaa76d769861055c6ce
 from rich.table import Table
 import click
 
@@ -90,34 +85,6 @@ class UserInterface:
         table.add_column("Subject", style="magenta")
         table.add_column("Author", style="green")
         table.add_column("Date", style="yellow")
-<<<<<<< HEAD
-        
-        total_commits = len(commits)
-        current_index = 0
-        
-        while current_index < total_commits:
-            # Add rows for the next set of commits
-            for i in range(current_index, min(current_index + page_size, total_commits)):
-                commit = commits[i]
-                table.add_row(
-                    commit['hash'],
-                    commit['subject'],
-                    commit['author'],
-                    commit['date']
-                )
-            
-            # Print the updated table
-            print(table)
-            
-            current_index += page_size
-            
-            # Check if there are more commits to show
-            if current_index < total_commits:
-                click.confirm("Press Enter to show more commits", default=True, abort=True)
-            else:
-                print("[bold green]End of commits list.[/bold green]")
-||||||| dd0ec99
-=======
 
         total_commits = len(commits)
         current_index = 0
@@ -143,4 +110,3 @@ class UserInterface:
                 click.confirm("Press Enter to show more commits", default=True, abort=True)
             else:
                 print("[bold green]End of commits list.[/bold green]")
->>>>>>> 075de42774c41d891314acaa76d769861055c6ce
