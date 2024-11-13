@@ -41,6 +41,9 @@ class UserInterface:
             help='Filter by impact area (e.g., frontend, backend).'
         )
 
+        # Retro command
+        subparsers.add_parser('retro', help='Generate retroactive commit messages.')
+
         # Help flag is automatically handled by argparse
 
     def parse_args(self):

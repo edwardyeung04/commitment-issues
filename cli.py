@@ -17,6 +17,7 @@ from cli_interface.user_interface import UserInterface
 from cli_interface.message_maker import MessageMaker
 from git_scripts.git_diff_fetcher import GitDiffFetcher
 from git_scripts.git_history_analyzer import GitHistoryAnalyzer
+from git_scripts.retroactive_commit import RetroactiveCommit
 from rich import print
 
 def load_environment():
@@ -34,6 +35,7 @@ def main():
 
     git_fetcher = GitDiffFetcher()
     git_analyzer = GitHistoryAnalyzer()
+    retro_commit = RetroactiveCommit()
 
     if args.command == 'commit':
         changes = git_fetcher.get_staged_diff()
@@ -87,6 +89,13 @@ def main():
             ui.display_commits_paginated(filtered_commits)
         else:
             print("[bold red]No commits found matching the criteria.[/bold red]")
+    elif args.command == 'retro':
+        retro_commit.generate_commit_message()
+        # Notify the user to force push the changes
+        print("\nAll commits have been updated with new messages.")
+        print("To apply these changes to your remote repository, use:\n")
+        print("    git push --force\n")
+        print("Note: Force pushing rewrites history on the remote repository, so ensure this is safe to do.")
     else:
         # If no command is provided, show help
         ui.parser.print_help()
