@@ -5,7 +5,12 @@ import os
 import subprocess
 import sys
 import tempfile
+<<<<<<< HEAD
 from rich import print
+||||||| dd0ec99
+=======
+from rich import print as rich_print
+>>>>>>> 075de42774c41d891314acaa76d769861055c6ce
 from rich.table import Table
 import click
 
@@ -25,7 +30,8 @@ class UserInterface:
             '-m', '--template',
             choices=['c', 's'],  # 'c' for complex, 's' for simple
             default='s',
-            help='Select the commit message template complexity. (c: complex, s: simple) (Default: s)'
+            help='Select the commit message template complexity.' +
+                 '(c: complex, s: simple) (Default: s)'
         )
 
         # Filter command
@@ -50,14 +56,15 @@ class UserInterface:
         return self.parser.parse_args()
 
     def display_commit_message(self, commit_message):
-        print(f"\nGenerated commit message:\n{commit_message}")
+        rich_print(f"\nGenerated commit message:\n{commit_message}")
 
     def prompt_user_action(self):
-        return input("\nDo you want to (a)ccept this message, (r)egenerate, (e)dit, or (q)uit? ").lower()
+        return input("\nDo you want to (a)ccept this message," +
+                     " (r)egenerate, (e)dit, or (q)uit? ").lower()
 
     def prompt_feedback(self):
         return input("Please provide feedback for regeneration (or press Enter to skip): ")
-    
+
     def prompt_manual_edit(self, initial_message):
         with tempfile.NamedTemporaryFile(suffix=".tmp") as temp_file:
             # Write initial commit message
@@ -83,6 +90,7 @@ class UserInterface:
         table.add_column("Subject", style="magenta")
         table.add_column("Author", style="green")
         table.add_column("Date", style="yellow")
+<<<<<<< HEAD
         
         total_commits = len(commits)
         current_index = 0
@@ -108,3 +116,31 @@ class UserInterface:
                 click.confirm("Press Enter to show more commits", default=True, abort=True)
             else:
                 print("[bold green]End of commits list.[/bold green]")
+||||||| dd0ec99
+=======
+
+        total_commits = len(commits)
+        current_index = 0
+
+        while current_index < total_commits:
+            # Add rows for the next set of commits
+            for i in range(current_index, min(current_index + page_size, total_commits)):
+                commit = commits[i]
+                table.add_row(
+                    commit['hash'],
+                    commit['subject'],
+                    commit['author'],
+                    commit['date']
+                )
+
+            # Print the updated table
+            print(table)
+
+            current_index += page_size
+
+            # Check if there are more commits to show
+            if current_index < total_commits:
+                click.confirm("Press Enter to show more commits", default=True, abort=True)
+            else:
+                print("[bold green]End of commits list.[/bold green]")
+>>>>>>> 075de42774c41d891314acaa76d769861055c6ce
