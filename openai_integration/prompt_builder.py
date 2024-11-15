@@ -1,33 +1,79 @@
 # openai_integration/prompt_builder.py
 
+import textwrap
+
+
 class PromptBuilder:
     def __init__(self, template='simple'):
         self.template = template
 
     def construct_prompt(self, changes, feedback=None, old_message=None):
-        base_prompt = (
-            "You are an AI assistant that generates commit messages based on git diff changes. "
-            "Analyze the following changes and determine the appropriate ChangeType and ImpactArea."
-            " Use the exact terms provided for ChangeType and ImpactArea. "
-            "Then, format the commit message as follows:\n"
-            "<ChangeType> | <ImpactArea>: <TLDR>\n\n"
-            "Where:\n"
-            "- ChangeType is one of: feature, bugfix, refactor, docs, test, chore\n"
-            "- ImpactArea is the part of the project affected "
-            "(e.g., frontend, backend, database, user interface)\n"
-            "- TLDR is a brief, one-line summary of the changes"
-        )
+        # Base instructions
+        base_instructions = textwrap.dedent("""
+            You are an AI assistant tasked with generating commit messages based strictly on the provided git diff changes.
+            Please adhere to the following instructions carefully and do not deviate from the format or include any additional information.
+
+            **Format:**
+            <ChangeType> | <ImpactArea>: <TLDR>
+
+            **Instructions:**
+        """)
+
+        # Detailed instructions
+        detailed_instructions = textwrap.dedent("""
+            - **ChangeType**: Select **only one** from [feature, bugfix, refactor, docs, test, chore].
+            - **ImpactArea**: Specify the affected part of the project (e.g., 'frontend', 'backend', 'database', 'user interface').
+            - **TLDR**: Write a concise, one-line summary of the changes in imperative mood (e.g., 'Fix crash when user inputs empty string').
+            - Do not include any details beyond the TLDR unless instructed.
+            - **Do not** add any sections or information not specified in the format.
+        """)
+
+        # Combine base instructions with detailed instructions
+        base_prompt = f"{base_instructions}\n{detailed_instructions}\n"
+
+        # Additional instructions for 'complex' template
         if self.template == 'complex':
-            base_prompt += (
-                "\n\nProvide a detailed description following the TLDR."
-            )
+            complex_instructions = textwrap.dedent("""
+                
+                After the TLDR, provide a detailed description of the changes starting on a new line.
+                The detailed description should explain what was changed and why, using clear and concise language.
+            """)
+            base_prompt += complex_instructions
 
-        user_message = f"Generate a commit message for the following changes:\n{changes}\n"
+        # Examples section
+        examples = textwrap.dedent("""
+            **Examples:**
+            feature | backend: Add user authentication module
+            bugfix | frontend: Fix alignment issue on login page
+            refactor | database: Optimize query performance
+        """).strip()
 
+        base_prompt += "\n\n" + examples + "\n"
+
+        # Git Diff Changes section
+        git_diff_section = textwrap.dedent(f"""
+            **Git Diff Changes:**
+            ```
+            {changes}
+            ```
+        """)
+
+        user_message = git_diff_section
+
+        # Previous Commit Message and User Feedback sections (if provided)
         if feedback and old_message:
-            user_message += f"The following is the previous commit message: {old_message}\n"
-            user_message += "The following is user feedback. THIS IS THE MOST IMPORTANT FACTOR. "
-            user_message += "USE IT HEAVILY FOR DETERMINING TLDR, CHANGETYPE, AND IMPACTAREA: "
-            user_message += f"{feedback}\n"
+            previous_commit = textwrap.dedent(f"""
+                
+                **Previous Commit Message:**
+                {old_message}
 
-        return f"{base_prompt}\n\n{user_message}"
+                **User Feedback:**
+                {feedback}
+                Please revise the commit message accordingly, strictly following the format and instructions.
+            """)
+            user_message += previous_commit
+
+        # Combine base_prompt with user_message
+        full_prompt = f"{base_prompt}{user_message}"
+
+        return full_prompt

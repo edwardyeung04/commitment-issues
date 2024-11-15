@@ -16,8 +16,8 @@ class ResponseProcessor:
         # Define a regex pattern to match the commit message format
         pattern = (
             r"^\s*(?P<ChangeType>feat|feature|bugfix|fix|refactor|docs|doc|test|tests|chore)"
-            r"\s*\|\s*(?P<ImpactArea>[\w\s]+):\s*(?P<TLDR>.+?)(?:\n|$)"
-        ) # pylint: disable=C0301
+            r"\s*\|\s*(?P<ImpactArea>[\w\s\-]+):\s*(?P<TLDR>.+?)(?:\n|$)"
+        )
 
         # Match against the main components of the commit message
         match = re.match(pattern, response_text, re.IGNORECASE)
@@ -57,10 +57,9 @@ class ResponseProcessor:
         change_type = change_type_mapping.get(change_type, change_type)
 
         # Build the commit message
-        lines = response_text.split('\n', 1)
-        if len(lines) > 1:
+        if remaining_text.startswith("\n"):
             # There is a detailed description
-            detailed_description = lines[1].strip()
+            detailed_description = remaining_text.lstrip('\n').strip()
             commit_message = f"{change_type} | {impact_area}: {tldr}\n\n{detailed_description}"
         else:
             # No detailed description
