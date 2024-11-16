@@ -10,8 +10,12 @@ Functions:
  commits based on the provided command.
 """
 
+
+
 import os
 import sys
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import subprocess
 from dotenv import load_dotenv
 from rich import print as rich_print
