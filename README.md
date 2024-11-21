@@ -8,38 +8,7 @@ Commitment Issues takes the hassle out of writing commit messages, making them c
 
 ## Installation
 
-*In development*
-
-    pip install cissue
-
-### Prerequisites
-
-- **Python 3.7+**
-- **Git**
-
-### Installation Instructions
-
-1. **Clone the Repository:**
-
-        git clone https://github.com/edwardyeung04/commitment-issues.git
-        cd commitment-issues
-
-2. **Install Dependencies:**
-
-    **Important:** This program requires OpenAI package version `0.28`.
-
-        pip install openai==0.28 python-dotenv
-
-    Alternatively, using `requirements.txt`:
-
-        pip install -r requirements.txt
-
-    **`requirements.txt` Content:**
-
-        openai==0.28
-        python-dotenv
-        pytest
-        pylint
+    pip install ComIss
 
 ## Setup
 
@@ -77,7 +46,7 @@ Commitment Issues takes the hassle out of writing commit messages, making them c
 
         Simply run the `commit` command without specifying the template. This uses the default `simple` template.
 
-            python cli.py commit
+            ComIss commit
 
         **What Happens:**
 
@@ -89,7 +58,7 @@ Commitment Issues takes the hassle out of writing commit messages, making them c
 
         Choose between `simple` and `complex` templates by using the `-m` or `--template` flag **after** the `commit` subcommand.
 
-            python cli.py commit -m c
+            ComIss commit -m c
 
         **Options:**
 
@@ -99,7 +68,7 @@ Commitment Issues takes the hassle out of writing commit messages, making them c
 
         **Example:**
 
-            python cli.py commit -m s
+            ComIss commit -m s
 
 4. **Check Message:**
 
@@ -125,7 +94,7 @@ Commitment Issues takes the hassle out of writing commit messages, making them c
 
 - **Filter Commit History:**
 
-        python cli.py filter -c bugfix -i backend
+        ComIss filter -c bugfix -i backend
 
     **Options:**
 
@@ -141,19 +110,19 @@ Commitment Issues takes the hassle out of writing commit messages, making them c
     - **Reformat by Commit ID:** Update a specific commit message using its commit ID.
 
         ```bash
-        python cli.py reformat --commit-id <commit_id>
+        ComIss reformat --commit-id <commit_id>
         ```
 
     - **Reformat by Number of Commits:** Update the last **N** commit messages.
 
         ```bash
-        python cli.py reformat --last <number>
+        ComIssreformat --last <number>
         ```
 
     - **Reformat by Time Period:** Update commits within a specific time frame.
 
         ```bash
-        python cli.py reformat --period "YYYY-MM-DD:YYYY-MM-DD"
+        ComIss reformat --period "YYYY-MM-DD:YYYY-MM-DD"
         ```
 
     #### Options
@@ -169,7 +138,7 @@ Commitment Issues takes the hassle out of writing commit messages, making them c
         To reformat a commit with the ID `abc1234`:
 
         ```bash
-        python cli.py reformat --commit-id abc1234
+        ComIss reformat --commit-id abc1234
         ```
 
     - **Reformat the Last 10 Commits:**
@@ -177,7 +146,7 @@ Commitment Issues takes the hassle out of writing commit messages, making them c
         To reformat the most recent 10 commit messages:
 
         ```bash
-        python cli.py reformat --last 10
+        ComIss reformat --last 10
         ```
 
     - **Reformat Commits Within a Date Range:**
@@ -185,7 +154,7 @@ Commitment Issues takes the hassle out of writing commit messages, making them c
         To reformat commits made between January 1, 2024, and June 30, 2024:
 
         ```bash
-        python cli.py reformat --period "2024-01-01:2024-06-30"
+        ComIss reformat --period "2024-01-01:2024-06-30"
         ```
 
     #### Important Notes
@@ -200,11 +169,11 @@ Commitment Issues takes the hassle out of writing commit messages, making them c
 
     To see all available commands and options, use the `--help` flag.
 
-        python cli.py --help
+        ComIss --help
 
     **Example Output:**
 
-        usage: cli.py [-h] {commit,filter,reformat} ...
+        usage: ComIss [-h] {commit,filter,reformat} ...
 
         CLI tool to generate and manage commit messages.
 

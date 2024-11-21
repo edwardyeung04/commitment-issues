@@ -7,7 +7,7 @@ def read_requirements():
 
 setup(
     name="ComIss",  # Replace with your package's name
-    version="0.1.0",
+    version="0.1.1",
     author="ComIss team",
     author_email="boazwu@uw.edu",
     description="Commitment Issues",

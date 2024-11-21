@@ -53,13 +53,13 @@ Currently, we have the following directories in our repository.
 \- `openai\_integration`   
 \- `tests`
 
-The source files can be found in the `cli_interface`, `git_scripts`, and `openai_integration` directories. The `cli.py` file is also a source file that is in the root directory. Documentation can be found in the ReadMe in the root directory. Tests will be found in `tests`. The `.github/workflows` directory is for automated linting and testing. 
+The source files can be found in the `cli_interface`, `git_scripts`, and `openai_integration` directories. Documentation can be found in the ReadMe in the root directory. Tests will be found in `tests`. The `.github/workflows` directory is for automated linting and testing. 
 
 ## How to Run the Project
 
 To run the project, we use the Python interpreter (no “build” required).
 
-`python cli.py [command] [flags]`
+`ComIss [command] [flags]`
 
 ## How to Test
 
@@ -82,21 +82,23 @@ Before building a release, ensure the version number is updated:
 * Update any version references in documentation files (like `README.md` or `CHANGELOG.md`).
 
 **2\. Check Dependencies and Sanity Tests**  
-Run a quick check to verify all dependencies are listed correctly in your `setup.py` or `pyproject.toml`, and run basic sanity checks:
+Run a quick check to verify all dependencies are listed correctly in your `setup.py` and run basic sanity checks:
 
 * Run tests locally (e.g., `pytest`) to confirm everything is working as expected.  
-* Use `flake8` or `pylint` to check for any code issues.
+* Use `pylint` to check for any code issues.
 
 **3\. Build the Release**  
 Use `setuptools` to build the package:
 
+* Run `python setup.py clean --all` to clean existing temporary files.
 * Run `python setup.py sdist bdist_wheel` to generate source distributions and wheel files.
 
 **4\. Perform Post-Build Verification**  
 After building:
 
 * Verify that the distribution files were created correctly in the `dist/` folder.  
-* Test installing the package locally with `pip install dist/your_package_name-x.y.z.tar.gz` or `.whl` to confirm installation runs smoothly.
+* Test installing the package locally with `pip install dist/ComIss-x.y.z-py3-none-any.whl` 
+(x y z is the version number) to confirm installation runs smoothly.
 
 **5\. Upload to PyPI (Optional)**  
 If the release is ready for public distribution:
