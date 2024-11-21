@@ -2,8 +2,11 @@ from setuptools import setup, find_packages
 
 # Read dependencies from requirements.txt
 def read_requirements():
-    with open("requirements.txt") as req_file:
+    with open("requirements.txt", encoding="utf-8") as req_file:
         return req_file.read().splitlines()
+
+with open("README.md", encoding="utf-8") as readme_file:
+    long_description = readme_file.read()
 
 setup(
     name="ComIss",  # Replace with your package's name
@@ -11,7 +14,7 @@ setup(
     author="ComIss team",
     author_email="boazwu@uw.edu",
     description="Commitment Issues",
-    long_description=open("README.md").read(),
+    long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/edwardyeung04/commitment-issues",  # URL to your code repository
     packages=find_packages(),

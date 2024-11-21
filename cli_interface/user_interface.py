@@ -6,6 +6,7 @@ from rich import print
 from rich.table import Table
 import click
 
+
 class UserInterface:
     def __init__(self):
         self.parser = argparse.ArgumentParser(
@@ -42,8 +43,6 @@ class UserInterface:
         # Retro command
         subparsers.add_parser('retro', help='Generate retroactive commit messages.')
 
-        # Help flag is automatically handled by argparse
-
     def parse_args(self):
         return self.parser.parse_args()
 
@@ -57,7 +56,7 @@ class UserInterface:
     def prompt_feedback(self):
         return input("Please provide feedback for regeneration (or press Enter to skip): ")
 
-    def prompt_manual_edit(self, initial_message):
+    def prompt_manual_edit(self):
         # Ask user for change type
         change_type = self.prompt_change_type()
 
@@ -70,25 +69,26 @@ class UserInterface:
         return f"{change_type} | {impact_area}: {commit_message}"
 
     def prompt_change_type(self):
-        change_type_short = input("Select a change type: (f)eature, (b)ugfix, (r)efactor, (d)ocs, (t)est, (c)hore.\n")
-        if (change_type_short == 'f'):
+        change_type_short = input("Select a change type: (f)eature, (b)ugfix, (r)efactor," +
+        "(d)ocs, (t)est, (c)hore.\n")
+        if change_type_short == 'f':
             return "feature"
-        elif (change_type_short == 'b'):
+        if change_type_short == 'b':
             return "bugfix"
-        elif (change_type_short == 'r'):
+        if change_type_short == 'r':
             return "refactor"
-        elif (change_type_short == 'd'):
+        if change_type_short == 'd':
             return "docs"
-        elif (change_type_short == 't'):
+        if change_type_short == 't':
             return "test"
-        elif (change_type_short == 'c'):
+        if change_type_short == 'c':
             return "chore"
-        else:
-            raise Exception(f"{change_type_short} is not short for a valid change type.")
+        # No need for an 'else' here since all options are checked.
+        raise ValueError(f"{change_type_short} is not short for a valid change type.")
 
     def prompt_impact_area(self):
         return input("Specify an impact area (e.g., frontend, backend, UI).\n")
-    
+
     def prompt_commit_message(self):
         return input("Specify a commit message.\n")
 
