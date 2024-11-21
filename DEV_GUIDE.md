@@ -59,6 +59,12 @@ The source files can be found in the `cli_interface`, `git_scripts`, and `openai
 
 To run the project, we use the Python interpreter (no “build” required).
 
+`python cli_interface/cli.py [command] [flags]`
+
+If you have already built a new version using steps 1-4 from the 
+"How to Build a Release of the Software" section, you can use ComIss 
+instead of python cli_interface/cli.py.
+
 `ComIss [command] [flags]`
 
 ## How to Test
