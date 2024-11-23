@@ -14,6 +14,7 @@ import os
 import sys
 import subprocess
 from dotenv import load_dotenv
+from pathlib import Path
 from rich import print as rich_print
 from cli_interface.user_interface import UserInterface
 from cli_interface.message_maker import MessageMaker
@@ -24,8 +25,11 @@ from git_scripts.retroactive_commit import RetroactiveCommit
 
 def load_environment():
     """Load environment variables from .env file."""
-    load_dotenv()
-    if not os.getenv("OPENAI_API_KEY"):
+    cwd = Path(os.getcwd())
+    dotenv_path = cwd / ".env"
+    if dotenv_path.exists():
+        load_dotenv(dotenv_path=dotenv_path)
+    else:
         rich_print("Error: OPENAI_API_KEY not found in environment variables.")
         sys.exit(1)
 

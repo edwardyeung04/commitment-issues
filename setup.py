@@ -10,7 +10,7 @@ with open("README.md", encoding="utf-8") as readme_file:
 
 setup(
     name="ComIss",  # Replace with your package's name
-    version="0.1.1",
+    version="0.1.2",
     author="ComIss team",
     author_email="boazwu@uw.edu",
     description="Commitment Issues",
