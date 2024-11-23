@@ -13,8 +13,8 @@ Functions:
 import os
 import sys
 import subprocess
-from dotenv import load_dotenv
 from pathlib import Path
+from dotenv import load_dotenv
 from rich import print as rich_print
 from cli_interface.user_interface import UserInterface
 from cli_interface.message_maker import MessageMaker
