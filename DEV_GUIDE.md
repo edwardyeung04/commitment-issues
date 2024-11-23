@@ -84,8 +84,7 @@ To add new tests, simply add a new test file to the `tests/` folder. Our current
 **1\. Update the Version Number**  
 Before building a release, ensure the version number is updated:
 
-* Update the version in the main Python file or `__init__.py` file within your package (e.g., `__version__ = "x.y.z"`).  
-* Update any version references in documentation files (like `README.md` or `CHANGELOG.md`).
+* Update the version in the `setup.py` file (`version = "x.y.z"`).  
 
 **2\. Check Dependencies and Sanity Tests**  
 Run a quick check to verify all dependencies are listed correctly in your `setup.py` and run basic sanity checks:
