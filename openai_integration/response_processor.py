@@ -10,10 +10,10 @@ class ResponseProcessor:
         if not raw_response:
             return None
 
-        # Remove any leading/trailing whitespace
+        # Remove any leading/trailing whitespace from the entire response
         response_text = raw_response.strip()
 
-        # Define a regex pattern to match the commit message format
+        # Define the regex pattern to match the commit message format
         pattern = (
             r"^\s*(?P<ChangeType>feat|feature|bugfix|fix|refactor|docs|doc|test|tests|chore)"
             r"\s*\|\s*(?P<ImpactArea>[\w\s\-]+):\s*(?P<TLDR>.+?)(?:\n|$)"
@@ -28,9 +28,14 @@ class ResponseProcessor:
             print("Response from GPT:\n", response_text)
             return None
 
-        # Ensure there are no extra sections beyond the matched portion
-        remaining_text = response_text[match.end():].strip()
-        if remaining_text and not remaining_text.startswith("\n"):
+        # Get the remaining text after the match without stripping
+        remaining_text = response_text[match.end():]
+
+        # Remove leading spaces and tabs but preserve newlines
+        remaining_text_lstripped = remaining_text.lstrip(' \t')
+
+        # Ensure there are no unexpected extra sections
+        if remaining_text_lstripped and not remaining_text_lstripped.startswith("\n"):
             # If there's unexpected content beyond the matched portion, return None
             print("Generated commit message contains unexpected extra sections.")
             print("Response from GPT:\n", response_text)
@@ -41,7 +46,7 @@ class ResponseProcessor:
         impact_area = match.group('ImpactArea').strip().lower()
         tldr = match.group('TLDR').strip()
 
-        # Validate the impact area to ensure it’s not missing or empty
+        # Validate the impact area to ensure it's not missing or empty
         if not impact_area:
             print("Commit message is missing an impact area.")
             print("Response from GPT:\n", response_text)
@@ -57,9 +62,9 @@ class ResponseProcessor:
         change_type = change_type_mapping.get(change_type, change_type)
 
         # Build the commit message
-        if remaining_text.startswith("\n"):
+        if remaining_text_lstripped.startswith("\n"):
             # There is a detailed description
-            detailed_description = remaining_text.lstrip('\n').strip()
+            detailed_description = remaining_text_lstripped.lstrip('\n').strip()
             commit_message = f"{change_type} | {impact_area}: {tldr}\n\n{detailed_description}"
         else:
             # No detailed description
