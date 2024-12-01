@@ -64,8 +64,14 @@ class ResponseProcessor:
         # Build the commit message
         if remaining_text_lstripped.startswith("\n"):
             # There is a detailed description
-            detailed_description = remaining_text_lstripped.lstrip('\n').strip()
-            commit_message = f"{change_type} | {impact_area}: {tldr}\n\n{detailed_description}"
+            detailed_description = remaining_text_lstripped.lstrip('\n')
+
+            # Normalize whitespace in the detailed description
+            detailed_description_lines = detailed_description.split('\n')
+            detailed_description_normalized = '\n'.join(line.lstrip() for line in detailed_description_lines)
+
+            # Build the final commit message
+            commit_message = f"{change_type} | {impact_area}: {tldr}\n\n{detailed_description_normalized}"
         else:
             # No detailed description
             commit_message = f"{change_type} | {impact_area}: {tldr}"
