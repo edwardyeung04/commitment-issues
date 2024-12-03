@@ -12,7 +12,7 @@ class GitHistoryAnalyzer:
             # Fetch the git log with commit hash, author, date, and subject
             git_log_output = subprocess.check_output(
                 ["git", "log", "--pretty=format:%H%n%an%n%ad%n%s%n---"],
-                universal_newlines=True
+                encoding='utf-8'
             )
 
             # Split the log into individual commits
