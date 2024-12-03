@@ -25,6 +25,7 @@ class PromptBuilder:
             - **ImpactArea**: Specify the affected part of the project (e.g., 'frontend', 'backend', 'database', 'user interface').
             - **TLDR**: Write a concise, one-line summary of the changes in imperative mood (e.g., 'Fix crash when user inputs empty string').
             - Do not include any details beyond the TLDR unless instructed.
+            - Ensure that each line in the detailed description does not start with extra spaces.
             - **Do not** add any sections or information not specified in the format.
         """)
 
