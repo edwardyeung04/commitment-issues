@@ -101,11 +101,6 @@ def handle_retroactive_commit(retro_commit):
     try:
         retro_commit.generate_commit_message()
         # Notify the user to force push the changes
-        print("\nAll commits have been updated with new messages.")
-        print("To apply these changes to your remote repository, use:\n")
-        print("    git push --force\n")
-        print("Note: Force pushing rewrites history on the remote repository, " +
-        "so ensure this is safe to do.")
     except Exception as e:
         print(f"An error occurred during retroactive commit: {e}")
 
