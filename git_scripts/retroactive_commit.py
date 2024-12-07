@@ -7,21 +7,34 @@ from cli_interface.message_maker import MessageMaker
 class RetroactiveCommit:
     def __init__(self):
         self.message_maker = MessageMaker()
+        # Hardcoded limit for developer testing: Set to an integer to limit commits,
+        # or None to process all commits.
+        self.LIMIT_COMMITS = 3  # Change this as needed
 
     def generate_commit_message(self):
-        # Get a list of commit hashes
+        # Get a list of all commit hashes from oldest to newest
         commit_hashes = subprocess.check_output(
             ['git', 'rev-list', '--reverse', 'HEAD'],
             stderr=subprocess.DEVNULL
         ).decode().split()
 
-        # Set GIT_SEQUENCE_EDITOR to automatically pick all commits
+        # If LIMIT_COMMITS is set, slice the list to only include that many recent commits
+        if self.LIMIT_COMMITS is not None:
+            commit_hashes = commit_hashes[-self.LIMIT_COMMITS:]
+            # We'll start the rebase from HEAD~LIMIT_COMMITS to only affect these commits
+            rebase_point = f'HEAD~{self.LIMIT_COMMITS}'
+        else:
+            # If no limit is set, rebase from the root
+            rebase_point = '--root'
+
+        # Set GIT_SEQUENCE_EDITOR to automatically convert 'pick' to 'edit'
         env = os.environ.copy()
         env['GIT_SEQUENCE_EDITOR'] = 'sed -i -e "s/^pick /edit /"'
 
         # Start an interactive rebase silently
+        rebase_cmd = ['git', 'rebase', '-i', rebase_point] if rebase_point != '--root' else ['git', 'rebase', '-i', '--root']
         subprocess.run(
-            ['git', 'rebase', '-i', '--root'],
+            rebase_cmd,
             env=env,
             stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL,
@@ -41,7 +54,7 @@ class RetroactiveCommit:
             # Generate a new commit message
             new_message = self.message_maker.generate_message(diff)
 
-            # Set commit author/committer dates (not strictly necessary, but preserving from original code)
+            # Attempt to preserve commit dates
             try:
                 env['GIT_COMMITTER_DATE'] = subprocess.check_output(
                     ['git', 'log', '-1', '--format=%cD', commit_hash],
@@ -79,7 +92,7 @@ class RetroactiveCommit:
                 check=True
             )
 
-        print("All commits have been updated with new messages.")
+        print("All specified commits have been updated with new messages.")
         print("To apply these changes to your remote repository, use:\n")
         print("    git push --force\n")
         print("Note: Force pushing rewrites history on the remote repository, so ensure this is safe to do.")
