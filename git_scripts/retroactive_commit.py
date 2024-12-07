@@ -9,7 +9,7 @@ class RetroactiveCommit:
         self.message_maker = MessageMaker()
         # Hardcoded limit for developer testing: Set to an integer to limit commits,
         # or None to process all commits.
-        self.LIMIT_COMMITS = 2  # Change this as needed
+        self.LIMIT_COMMITS = None  # Change this as needed
 
     def generate_commit_message(self):
         # Get a list of all commit hashes from oldest to newest
