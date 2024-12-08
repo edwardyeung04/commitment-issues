@@ -2,7 +2,6 @@
 
 import textwrap
 
-
 class PromptBuilder:
     def __init__(self, template='simple'):
         self.template = template
@@ -17,36 +16,57 @@ class PromptBuilder:
             <ChangeType> | <ImpactArea>: <TLDR>
 
             **Instructions:**
-        """)
-
-        # Detailed instructions
-        detailed_instructions = textwrap.dedent("""
             - **ChangeType**: Select **only one** from [feature, bugfix, refactor, docs, test, chore].
             - **ImpactArea**: Specify the affected part of the project (e.g., 'frontend', 'backend', 'database', 'user interface').
             - **TLDR**: Write a concise, one-line summary of the changes in imperative mood (e.g., 'Fix crash when user inputs empty string').
             - Do not include any details beyond the TLDR unless instructed.
             - Ensure that each line in the detailed description does not start with extra spaces.
             - **Do not** add any sections or information not specified in the format.
+            - Regardless of how many changes are detected, produce exactly ONE single commit message line.
+            - Do not produce multiple commit message headers. Only one "<ChangeType> | <ImpactArea>: <TLDR>" line is allowed.
         """)
 
-        # Combine base instructions with detailed instructions
+        detailed_instructions = ""
+        if self.template == 'complex':
+            detailed_instructions = textwrap.dedent("""
+                After the TLDR line, start a new line and provide a single detailed description
+                summarizing all changes together. This detailed description should clearly explain:
+                - What was changed
+                - Why it was changed
+
+                Even if multiple changes are provided in the diff, combine them into one cohesive commit.
+                Do not create multiple commit headers. Do not list separate changes as separate commits.
+                Provide one TLDR line and one optional detailed section.
+
+                **Do Not:**
+                - Produce multiple lines that start with "<ChangeType> | <ImpactArea>:" for the same commit.
+                - Include extra headers or multiple separate summaries.
+
+                **If Multiple Changes are Provided:**
+                - Combine them into a single TLDR and a single, cohesive detailed description block.
+            """)
+
+        # Combine base instructions with conditional detailed instructions
         base_prompt = f"{base_instructions}\n{detailed_instructions}\n"
 
-        # Additional instructions for 'complex' template
-        if self.template == 'complex':
-            complex_instructions = textwrap.dedent("""
-                
-                After the TLDR, provide a detailed description of the changes starting on a new line.
-                The detailed description should explain what was changed and why, using clear and concise language.
-            """)
-            base_prompt += complex_instructions
-
-        # Examples section
+        # Examples section demonstrating single-line commits
         examples = textwrap.dedent("""
             **Examples:**
             feature | backend: Add user authentication module
             bugfix | frontend: Fix alignment issue on login page
             refactor | database: Optimize query performance
+
+            **Multiple Changes Example:**
+            Suppose the diff shows changes to a backend function and a frontend file.
+            Combine them into a single commit message:
+            
+            refactor | backend: Improve API response handling
+            
+            (For complex template)
+            Detailed Description:
+            Update the API endpoint to return clearer error messages and adjust the frontend code
+            to handle the new response format. This ensures users receive more accurate feedback
+            and improves overall user experience.
         """).strip()
 
         base_prompt += "\n\n" + examples + "\n"
@@ -61,7 +81,7 @@ class PromptBuilder:
 
         user_message = git_diff_section
 
-        # Previous Commit Message and User Feedback sections (if provided)
+        # If feedback and old_message are provided, include them
         if feedback and old_message:
             previous_commit = textwrap.dedent(f"""
                 
