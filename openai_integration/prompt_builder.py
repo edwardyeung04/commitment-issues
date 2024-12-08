@@ -26,6 +26,7 @@ class PromptBuilder:
             - Do not produce multiple commit message headers. Only one "<ChangeType> | <ImpactArea>: <TLDR>" line is allowed.
         """)
 
+        # Updated detailed prompt descriptions 
         detailed_instructions = ""
         if self.template == 'complex':
             detailed_instructions = textwrap.dedent("""
