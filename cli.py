@@ -73,7 +73,7 @@ def handle_commit_message(ui, args, git_fetcher):
                 feedback, old_message=commit_message)
         elif user_input == 'e':
             try:
-                commit_message = ui.prompt_manual_edit(commit_message)
+                commit_message = ui.prompt_manual_edit()
             except Exception as e:
                 print(e)
         elif user_input == 'q':

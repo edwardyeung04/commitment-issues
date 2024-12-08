@@ -56,8 +56,7 @@ class UserInterface:
     def prompt_feedback(self):
         return input("Please provide feedback for regeneration (or press Enter to skip): ")
 
-    def prompt_manual_edit(self, existing_commit_message):
-        existing_commit_message = ""
+    def prompt_manual_edit(self):
         # Ask user for change type
         change_type = self.prompt_change_type()
 
