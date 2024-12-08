@@ -1,6 +1,5 @@
 import os
 import subprocess
-import sys
 import logging
 from cli_interface.message_maker import MessageMaker
 
@@ -9,7 +8,7 @@ class RetroactiveCommit:
         self.message_maker = MessageMaker()
         # Hardcoded limit for developer testing: Set to an integer to limit commits,
         # or None to process all commits.
-        self.LIMIT_COMMITS = None  # Change this as needed
+        self.limit_commits = 1  # Change this as needed
 
     def generate_commit_message(self):
         # Get a list of all commit hashes from oldest to newest
@@ -19,10 +18,10 @@ class RetroactiveCommit:
         ).decode().split()
 
         # If LIMIT_COMMITS is set, slice the list to only include that many recent commits
-        if self.LIMIT_COMMITS is not None:
-            commit_hashes = commit_hashes[-self.LIMIT_COMMITS:]
-            # We'll start the rebase from HEAD~LIMIT_COMMITS to only affect these commits
-            rebase_point = f'HEAD~{self.LIMIT_COMMITS}'
+        if self.limit_commits is not None:
+            commit_hashes = commit_hashes[-self.limit_commits:]
+            # We'll start the rebase from HEAD~limit_commits to only affect these commits
+            rebase_point = f'HEAD~{self.limit_commits}'
         else:
             # If no limit is set, rebase from the root
             rebase_point = '--root'
@@ -32,7 +31,8 @@ class RetroactiveCommit:
         env['GIT_SEQUENCE_EDITOR'] = 'sed -i -e "s/^pick /edit /"'
 
         # Start an interactive rebase silently
-        rebase_cmd = ['git', 'rebase', '-i', rebase_point] if rebase_point != '--root' else ['git', 'rebase', '-i', '--root']
+        rebase_cmd = ['git', 'rebase', '-i', rebase_point] 
+        if rebase_point != '--root' else ['git', 'rebase', '-i', '--root']
         subprocess.run(
             rebase_cmd,
             env=env,
@@ -43,7 +43,8 @@ class RetroactiveCommit:
 
         for commit_hash in commit_hashes:
             # Extract the diff for the commit
-            diff = subprocess.check_output(['git', 'show', commit_hash], stderr=subprocess.DEVNULL).decode()
+            diff = subprocess.check_output(['git', 'show', commit_hash], 
+            stderr=subprocess.DEVNULL).decode()
 
             # Extract old commit message for reference
             old_message = subprocess.check_output(
@@ -65,7 +66,10 @@ class RetroactiveCommit:
                     stderr=subprocess.DEVNULL
                 ).decode().strip()
             except subprocess.CalledProcessError:
-                logging.warning(f"Could not retrieve dates for commit {commit_hash}. Using current date/time.")
+                logging.warning(
+                    "Could not retrieve dates for commit %s. Using current date/time.", 
+                    commit_hash
+                )
 
             if new_message:
                 # Print the summary of what we're doing for this commit
@@ -95,4 +99,5 @@ class RetroactiveCommit:
         print("All specified commits have been updated with new messages.")
         print("To apply these changes to your remote repository, use:\n")
         print("    git push --force\n")
-        print("Note: Force pushing rewrites history on the remote repository, so ensure this is safe to do.")
+        print("Note: Force pushing rewrites history on ")
+        print("the remote repository, so ensure this is safe to do.")
