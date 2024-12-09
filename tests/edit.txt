@@ -1,1 +1,7 @@
 testing commit push verification test test
+
+adding new line
+
+adding more lines
+
+adding test line 3

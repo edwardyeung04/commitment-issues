@@ -68,9 +68,8 @@ class ResponseProcessor:
 
             # Normalize whitespace in the detailed description
             detailed_description_lines = detailed_description.split('\n')
-            detailed_description_normalized = '\n'.join(
-                line.lstrip() for line in detailed_description_lines
-            )
+            stripped_lines = (line.lstrip() for line in detailed_description_lines)
+            detailed_description_normalized = '\n'.join(stripped_lines)
 
             # Build the final commit message
             commit_message = (
