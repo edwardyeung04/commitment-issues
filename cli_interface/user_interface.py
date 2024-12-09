@@ -2,7 +2,6 @@
 
 import argparse
 import sys
-from rich import print
 from rich.table import Table
 import click
 
@@ -123,6 +122,10 @@ class UserInterface:
 
             # Check if there are more commits to show
             if current_index < total_commits:
-                click.confirm("Press Enter to show more commits", default=True, abort=True)
+                try:
+                    click.confirm("Press Enter to show more commits", default=True, abort=True)
+                except click.Abort:
+                    print("\nDone showing commits")
+                    break
             else:
                 print("[bold green]End of commits list.[/bold green]")

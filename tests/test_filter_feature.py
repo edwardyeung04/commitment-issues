@@ -1,5 +1,3 @@
-# git_scripts/git_history_analyzer.py
-
 import subprocess
 import re
 
@@ -57,3 +55,23 @@ class GitHistoryAnalyzer:
         except Exception as e:
             print(f"Unexpected error in filter_commits: {e}")
             return []
+
+def test_filter_feature():
+    change_types = ["feature", "bugfix", "refactor", "docs", "test", "chore"]
+    impact_areas = ["frontend", "backend", "database", "UI"]
+    git_analyzer = GitHistoryAnalyzer()
+    for ct in change_types:
+        for ia in impact_areas:
+            filtered_commits = git_analyzer.filter_commits(
+                change_type=ct,
+                impact_area=ia
+            )
+            # list of all the subject fields
+            subjects = [commit['subject'] for commit in filtered_commits]
+            # just the label part with change type and impact area
+            labels = [subject.split(':', 1)[0] for subject in subjects]
+            correct_label = ct + " | " + ia
+            assert all(label == correct_label for label in labels)
+
+if __name__ == "__main__":
+    test_filter_feature()
