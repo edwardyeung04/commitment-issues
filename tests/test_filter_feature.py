@@ -56,25 +56,22 @@ class GitHistoryAnalyzer:
             print(f"Unexpected error in filter_commits: {e}")
             return []
 
-def test_filter_feature(change_type, impact_area):
-    git_analyzer = GitHistoryAnalyzer()
-    filtered_commits = git_analyzer.filter_commits(
-        change_type=change_type,
-        impact_area=impact_area
-    )
-    # list of all the subject fields
-    subjects = [commit['subject'] for commit in filtered_commits]
-    # just the label part with change type and impact area
-    labels = [subject.split(':', 1)[0] for subject in subjects]
-    correct_label = change_type + " | " + impact_area
-    assert all(label == correct_label for label in labels)
-
-def call_test_filter_feature():
+def test_filter_feature():
     change_types = ["feature", "bugfix", "refactor", "docs", "test", "chore"]
-    impact_areas = ["frontend", "backend", "database"]
+    impact_areas = ["frontend", "backend", "database", "UI"]
+    git_analyzer = GitHistoryAnalyzer()
     for ct in change_types:
         for ia in impact_areas:
-            test_filter_feature(ct, ia)
+            filtered_commits = git_analyzer.filter_commits(
+                change_type=ct,
+                impact_area=ia
+            )
+            # list of all the subject fields
+            subjects = [commit['subject'] for commit in filtered_commits]
+            # just the label part with change type and impact area
+            labels = [subject.split(':', 1)[0] for subject in subjects]
+            correct_label = ct + " | " + ia
+            assert all(label == correct_label for label in labels)
 
 if __name__ == "__main__":
-    call_test_filter_feature()
+    test_filter_feature()
