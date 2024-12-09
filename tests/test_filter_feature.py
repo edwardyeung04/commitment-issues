@@ -62,11 +62,13 @@ def test_filter_feature(change_type, impact_area):
         change_type=change_type,
         impact_area=impact_area
     )
-    subjects = [commit['subject'] for commit in filtered_commits] # list of all the subject fields
-    labels = [subject.split(':', 1)[0] for subject in subjects] # just the label part with change type and impact area
+    # list of all the subject fields
+    subjects = [commit['subject'] for commit in filtered_commits]
+    # just the label part with change type and impact area
+    labels = [subject.split(':', 1)[0] for subject in subjects]
     correct_label = change_type + " | " + impact_area
     assert all(label == correct_label for label in labels)
-    
+
 def call_test_filter_feature():
     change_types = ["feature", "bugfix", "refactor", "docs", "test", "chore"]
     impact_areas = ["frontend", "backend", "database"]
