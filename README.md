@@ -79,7 +79,8 @@ Commitment Issues takes the hassle out of writing commit messages, making them c
 
     - **Accept (a):** Automatically commits the changes with the generated message.
     - **Regenerate (r):** Generates a new message and shows suggestions.
-    - **Edit (e):** Opens an editor to write your own message.
+    - **Edit (e):** Opens an editor to manually write a new message from scratch.
+                    To edit the existing version of the message, please copy and paste the original as a starting point.
     - **Quit (q):** Exits without committing.
 
 5. **Push Changes:**
