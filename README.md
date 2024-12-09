@@ -14,9 +14,7 @@ Commitment Issues takes the hassle out of writing commit messages, making them c
 
 1. **Create a `.env` File:**
 
-    In the project root, create a file named `.env`:
-
-        touch .env
+    In the project root, create a file named `.env`.
 
 2. **Add Your OpenAI API Key:**
 
