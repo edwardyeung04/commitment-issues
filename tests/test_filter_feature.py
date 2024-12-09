@@ -66,10 +66,13 @@ def test_filter_feature(change_type, impact_area):
     labels = [subject.split(':', 1)[0] for subject in subjects] # just the label part with change type and impact area
     correct_label = change_type + " | " + impact_area
     assert all(label == correct_label for label in labels)
-
-if __name__ == "__main__":
+    
+def call_test_filter_feature():
     change_types = ["feature", "bugfix", "refactor", "docs", "test", "chore"]
     impact_areas = ["frontend", "backend", "database"]
     for ct in change_types:
         for ia in impact_areas:
             test_filter_feature(ct, ia)
+
+if __name__ == "__main__":
+    call_test_filter_feature()
