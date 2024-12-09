@@ -14,9 +14,7 @@ Commitment Issues takes the hassle out of writing commit messages, making them c
 
 1. **Create a `.env` File:**
 
-    In the project root, create a file named `.env`:
-
-        touch .env
+    In the project root, create a file named `.env`.
 
 2. **Add Your OpenAI API Key:**
 
@@ -81,7 +79,8 @@ Commitment Issues takes the hassle out of writing commit messages, making them c
 
     - **Accept (a):** Automatically commits the changes with the generated message.
     - **Regenerate (r):** Generates a new message and shows suggestions.
-    - **Edit (e):** Opens an editor to write your own message.
+    - **Edit (e):** Opens an editor to manually write a new message from scratch.
+                    To edit the existing version of the message, please copy and paste the original as a starting point.
     - **Quit (q):** Exits without committing.
 
 5. **Push Changes:**
@@ -101,60 +100,16 @@ Commitment Issues takes the hassle out of writing commit messages, making them c
     - `-c`, `--change-type`: Filter commits by change type (e.g., feature, bugfix).
     - `-i`, `--impact-type`: Filter commits by impact area (e.g., frontend, backend).
 
-- **Reformat Commit History *(Work in Progress)*:**
+- **Reformat Commit History:**
 
-    The **Reformat Commit History** feature allows you to update previous commit messages to align with Commitment Issues' current structured format. This feature is currently under development and aims to help maintain a consistent and informative commit history.
+    The **Reformat Commit History** feature allows you to update previous commit messages to align with Commitment Issues' current structured format. This feature aims to help maintain a consistent and informative commit history.
 
     #### Features
 
-    - **Reformat by Commit ID:** Update a specific commit message using its commit ID.
+    - **Reformat All:** Updates all commit messages in your directory to the Commitment Issues' structured format.
 
         ```bash
-        ComIss reformat --commit-id <commit_id>
-        ```
-
-    - **Reformat by Number of Commits:** Update the last **N** commit messages.
-
-        ```bash
-        ComIssreformat --last <number>
-        ```
-
-    - **Reformat by Time Period:** Update commits within a specific time frame.
-
-        ```bash
-        ComIss reformat --period "YYYY-MM-DD:YYYY-MM-DD"
-        ```
-
-    #### Options
-
-    - `--commit-id <commit_id>`: Reformat a specific commit by its ID.
-    - `--last <number>`: Reformat the last **N** commits.
-    - `--period "YYYY-MM-DD:YYYY-MM-DD"`: Reformat commits within a specific date range.
-
-    #### Usage Examples
-
-    - **Reformat a Specific Commit:**
-
-        To reformat a commit with the ID `abc1234`:
-
-        ```bash
-        ComIss reformat --commit-id abc1234
-        ```
-
-    - **Reformat the Last 10 Commits:**
-
-        To reformat the most recent 10 commit messages:
-
-        ```bash
-        ComIss reformat --last 10
-        ```
-
-    - **Reformat Commits Within a Date Range:**
-
-        To reformat commits made between January 1, 2024, and June 30, 2024:
-
-        ```bash
-        ComIss reformat --period "2024-01-01:2024-06-30"
+        ComIss retro
         ```
 
     #### Important Notes
@@ -165,6 +120,8 @@ Commitment Issues takes the hassle out of writing commit messages, making them c
 
     - **Immutable History:** Altering commit history changes commit hashes, which may lead to discrepancies if not managed carefully.
 
+    - **Pushing to Remote Repository:** If you plan to push a rebase back to the remote repository, you need write access.
+
 - **View Help:**
 
     To see all available commands and options, use the `--help` flag.
@@ -173,16 +130,16 @@ Commitment Issues takes the hassle out of writing commit messages, making them c
 
     **Example Output:**
 
-        usage: ComIss [-h] {commit,filter,reformat} ...
+        usage: ComIss [-h] {commit,filter,retro} ...
 
         CLI tool to generate and manage commit messages.
 
         positional arguments:
-          {commit,filter,reformat}
+          {commit,filter,retro}
                                 Commands
               commit              Generate and commit a message.
               filter              Filter commit history.
-              reformat            Reformat commit history.
+              retro            Reformat commit history.
 
         options:
           -h, --help            show this help message and exit

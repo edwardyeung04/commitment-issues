@@ -68,7 +68,7 @@ class UserInterface:
         return f"{change_type} | {impact_area}: {commit_message}"
 
     def prompt_change_type(self):
-        change_type_short = input("Select a change type: (f)eature, (b)ugfix, (r)efactor," +
+        change_type_short = input("Select a change type: (f)eature, (b)ugfix, (r)efactor, " +
         "(d)ocs, (t)est, (c)hore.\n")
         if change_type_short == 'f':
             return "feature"

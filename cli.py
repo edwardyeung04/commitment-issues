@@ -73,7 +73,7 @@ def handle_commit_message(ui, args, git_fetcher):
                 feedback, old_message=commit_message)
         elif user_input == 'e':
             try:
-                commit_message = ui.prompt_manual_edit(commit_message)
+                commit_message = ui.prompt_manual_edit()
             except Exception as e:
                 print(e)
         elif user_input == 'q':
@@ -101,11 +101,6 @@ def handle_retroactive_commit(retro_commit):
     try:
         retro_commit.generate_commit_message()
         # Notify the user to force push the changes
-        print("\nAll commits have been updated with new messages.")
-        print("To apply these changes to your remote repository, use:\n")
-        print("    git push --force\n")
-        print("Note: Force pushing rewrites history on the remote repository, " +
-        "so ensure this is safe to do.")
     except Exception as e:
         print(f"An error occurred during retroactive commit: {e}")
 
